@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses - EduPlay</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .progress-bar {
+            height: 6px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i data-feather="book-open" class="text-indigo-600 h-8 w-8"></i>
+                        <span class="ml-2 text-xl font-bold text-gray-900">EduPlay</span>
+                    </div>
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="index.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            Home
+                        </a>
+                        <a href="#" class="border-indigo-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            Courses
+                        </a>
+                        <a href="games.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            Games
+                        </a>
+                        <a href="teacher.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            Teacher Dashboard
+                        </a>
+                    </div>
+                </div>
+                <div class="hidden sm:ml-6 sm:flex sm:items-center">
+                    <div class="relative ml-3">
+                        <div class="flex space-x-4">
+                            <button class="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700">
+                                Login
+                            </button>
+                            <div class="relative">
+                                <button id="language-dropdown" class="flex items-center text-gray-500 hover:text-gray-700">
+                                    <i data-feather="globe" class="h-5 w-5"></i>
+                                    <span class="ml-1">English</span>
+                                    <i data-feather="chevron-down" class="ml-1 h-4 w-4"></i>
+                                </button>
+                                <div id="language-menu" class="hidden absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                                    <div class="py-1">
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">English</a>
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">हिंदी (Hindi)</a>
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">ଓଡ଼ିଆ (Odia)</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="-mr-2 flex items-center sm:hidden">
+                    <button type="button" id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                        <i data-feather="menu" class="block h-6 w-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden sm:hidden">
+            <div class="pt-2 pb-3 space-y-1">
+                <a href="index.html" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Home</a>
+                <a href="#" class="bg-indigo-50 border-indigo-500 text-indigo-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Courses</a>
+                <a href="games.html" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Games</a>
+                <a href="teacher.html" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Teacher Dashboard</a>
+            </div>
+            <div class="pt-4 pb-3 border-t border-gray-200">
+                <div class="flex items-center px-4 space-x-3">
+                    <button class="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700" onclick="goToLink('./login.html')">
+                        Login
+                    </button>
+                    <div class="relative">
+                        <button id="mobile-language-dropdown" class="flex items-center text-gray-500 hover:text-gray-700">
+                            <i data-feather="globe" class="h-5 w-5"></i>
+                            <span class="ml-1">English</span>
+                            <i data-feather="chevron-down" class="ml-1 h-4 w-4"></i>
+                        </button>
+                        <div id="mobile-language-menu" class="hidden absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                            <div class="py-1">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">English</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">हिंदी (Hindi)</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">ଓଡ଼ିିଆ (Odia)</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Courses Header -->
+    <div class="bg-white">
+        <div class="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl" data-aos="fade-down">
+                    Explore Our Courses
+                </h1>
+                <p class="mt-6 max-w-lg mx-auto text-xl text-gray-500" data-aos="fade-up" data-aos-delay="100">
+                    Curriculum-aligned courses that combine interactive lessons with gamified learning.
+                </p>
+                <div class="mt-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="inline-flex rounded-md shadow">
+                        <a href="#" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
+                            Filter Courses
+                            <i data-feather="filter" class="ml-2 h-4 w-4"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Courses Grid -->
+    <div class="bg-gray-50 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                <!-- Course 1 -->
+                <div class="course-card bg-white rounded-lg shadow-md overflow-hidden transition duration-300 ease-in-out" data-aos="fade-up">
+                    <div class="h-48 bg-blue-100 flex items-center justify-center relative">
+                        <i data-feather="box" class="h-16 w-16 text-blue-600"></i>
+                        <div class="absolute top-4 right-4 bg-yellow-400 text-xs font-bold px-2 py-1 rounded-full">
+                            New
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start">
+                            <h3 class="text-lg font-medium text-gray-900">Mathematics Fundamentals</h3>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                Beginner
+                            </span>
+                        </div>
+                        <p class="mt-2 text-gray-500">
+                            Master basic arithmetic, algebra, and geometry concepts through interactive lessons and games.
+                        </p>
+                        <div class="mt-4">
+                            <div class="flex justify-between text-sm text-gray-500 mb-1">
+                                <span>Progress</span>
+                                <span>25%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-blue-600 progress-bar h-2.5 rounded-full" style="width: 25%"></div>
+                            </div>
+                        </div>
+                        <div class="mt-6 flex justify-between items-center">
+                            <div class="flex items-center">
+                                <i data-feather="clock" class="h-4 w-4 text-gray-400"></i>
+                                <span class="ml-1 text-sm text-gray-500">12 hours</span>
+                            </div>
+                            <a href="course-detail.html" class="text-indigo-600 hover:text-indigo-500 font-medium text-sm">
+                                Continue <span aria-hidden="true">&rarr;</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course 2 -->
+                <div class="course-card bg-white rounded-lg shadow-md overflow-hidden transition duration-300 ease-in-out" data-aos="fade-up" data-aos-delay="100">
+                    <div class="h-48 bg-green-100 flex items-center justify-center">
+                        <i data-feather="atom" class="h-16 w-16 text-green-600"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start">
+                            <h3 class="text-lg font-medium text-gray-900">Physical Science</h3>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                Intermediate
+                            </span>
+                        </div>
+                        <p class="mt-2 text-gray-500">
+                            Explore physics and chemistry through virtual experiments and problem-solving challenges.
+                        </p>
+                        <div class="mt-4">
+                            <div class="flex justify-between text-sm text-gray-500 mb-1">
+                                <span>Progress</span>
+                                <span>0%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-blue-600 progress-bar h-2.5 rounded-full" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="mt-6 flex justify-between items-center">
+                            <div class="flex items-center">
+                                <i data-feather="clock" class="h-4 w-4 text-gray-400"></i>
+                                <span class="ml-1 text-sm text-gray-500">18 hours</span>
+                            </div>
+                            <a href="course-detail.html" class="text-indigo-600 hover:text-indigo-500 font-medium text-sm">
+                                Start Course <span aria-hidden="true">&rarr;</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course 3 -->
+                <div class="course-card bg-white rounded-lg shadow-md overflow-hidden transition duration-300 ease-in-out" data-aos="fade-up" data-aos-delay="200">
+                    <div class="h-48 bg-purple-100 flex items-center justify-center">
+                        <i data-feather="code" class="h-16 w-16 text-purple-600"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start">
+                            <h3 class="text-lg font-medium text-gray-900">Introduction to Coding</h3>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                Beginner
+                            </span>
+                        </div>
+                        <p class="mt-2 text-gray-500">
+                            Learn programming fundamentals with block-based and text-based coding in a game environment.
+                        </p>
+                        <div class="mt-4">
+                            <div class="flex justify-between text-sm text-gray-500 mb-1">
+                                <span>Progress</span>
+                                <span>65%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-blue-600 progress-bar h-2.5 rounded-full" style="width: 65%"></div>
+                            </div>
+                        </div>
+                        <div class="mt-6 flex justify-between items-center">
+                            <div class="flex items-center">
+                                <i data-feather="clock" class="h-4 w-4 text-gray-400"></i>
+                                <span class="ml-1 text-sm text-gray-500">15 hours</span>
+                            </div>
+                            <a href="course-detail.html" class="text-indigo-600 hover:text-indigo-500 font-medium text-sm">
+                                Continue <span aria-hidden="true">&rarr;</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course 4 -->
+                <div class="course-card bg-white rounded-lg shadow-md overflow-hidden transition duration-300 ease-in-out" data-aos="fade-up">
+                    <div class="h-48 bg-yellow-100 flex items-center justify-center">
+                        <i data-feather="cpu" class="h-16 w-16 text-yellow-600"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start">
+                            <h3 class="text-lg font-medium text-gray-900">Robotics & Engineering</h3>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                                Advanced
+                            </span>
+                        </div>
+                        <p class="mt-2 text-gray-500">
+                            Design, build and program virtual robots to solve real-world engineering challenges.
+                        </p>
+                        <div class="mt-4">
+                            <div class="flex justify-between text-sm text-gray-500 mb-1">
+                                <span>Progress</span>
+                                <span>10%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-blue-600 progress-bar h-2.5 rounded-full" style="width: 10%"></div>
+                            </div>
+                        </div>
+                        <div class="mt-6 flex justify-between items-center">
+                            <div class="flex items-center">
+                                <i data-feather="clock" class="h-4 w-4 text-gray-400"></i>
+                                <span class="ml-1 text-sm text-gray-500">24 hours</span>
+                            </div>
+                            <a href="course-detail.html" class="text-indigo-600 hover:text-indigo-500 font-medium text-sm">
+                                Continue <span aria-hidden="true">&rarr;</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course 5 -->
+                <div class="course-card bg-white rounded-lg shadow-md overflow-hidden transition duration-300 ease-in-out" data-aos="fade-up" data-aos-delay="100">
+                    <div class="h-48 bg-red-100 flex items-center justify-center">
+                        <i data-feather="activity" class="h-16 w-16 text-red-600"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start">
+                            <h3 class="text-lg font-medium text-gray-900">Life Sciences</h3>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                Intermediate
+                            </span>
+                        </div>
+                        <p class="mt-2 text-gray-500">
+                            Explore biology, ecology and human anatomy through interactive simulations and virtual dissections.
+                        </p>
+                        <div class="mt-4">
+                            <div class="flex justify-between text-sm text-gray-500 mb-1">
+                                <span>Progress</span>
+                                <span>0%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-blue-600 progress-bar h-2.5 rounded-full" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="mt-6 flex justify-between items-center">
+                            <div class="flex items-center">
+                                <i data-feather="clock" class="h-4 w-4 text-gray-400"></i>
+                                <span class="ml-1 text-sm text-gray-500">20 hours</span>
+                            </div>
+                            <a href="course-detail.html" class="text-indigo-600 hover:text-indigo-500 font-medium text-sm">
+                                Start Course <span aria-hidden="true">&rarr;</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course 6 -->
+                <div class="course-card bg-white rounded-lg shadow-md overflow-hidden transition duration-300 ease-in-out" data-aos="fade-up" data-aos-delay="200">
+                    <div class="h-48 bg-indigo-100 flex items-center justify-center relative">
+                        <i data-feather="globe" class="h-16 w-16 text-indigo-600"></i>
+                        <div class="absolute top-4 right-4 bg-red-400 text-xs font-bold px-2 py-1 rounded-full text-white">
+                            Popular
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start">
+                            <h3 class="text-lg font-medium text-gray-900">Environmental Science</h3>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                Beginner
+                            </span>
+                        </div>
+                        <p class="mt-2 text-gray-500">
+                            Understand ecosystems, climate change and sustainability through interactive case studies.
+                        </p>
+                        <div class="mt-4">
+                            <div class="flex justify-between text-sm text-gray-500 mb-1">
+                                <span>Progress</span>
+                                <span>45%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-blue-600 progress-bar h-2.5 rounded-full" style="width: 45%"></div>
+                            </div>
+                        </div>
+                        <div class="mt-6 flex justify-between items-center">
+                            <div class="flex items-center">
+                                <i data-feather="clock" class="h-4 w-4 text-gray-400"></i>
+                                <span class="ml-1 text-sm text-gray-500">16 hours</span>
+                            </div>
+                            <a href="course-detail.html" class="text-indigo-600 hover:text-indigo-500 font-medium text-sm">
+                                Continue <span aria-hidden="true">&rarr;</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center">
+                <button class="inline-flex items-center px-6 py-3 border border-gray-300 shadow-sm text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Load More Courses
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="bg-indigo-700">
+        <div class="max-w-2xl mx-auto text-center py-16 px-4 sm:py-20 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-extrabold text-white sm:text-4xl">
+                <span class="block">Can't find what you're looking for?</span>
+                <span class="block">Request a new course.</span>
+            </h2>
+            <p class="mt-4 text-lg leading-6 text-indigo-200">
+                We're constantly expanding our curriculum based on educator and student needs.
+            </p>
+            <a href="#" class="mt-8 w-full inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50 sm:w-auto">
+                Suggest a Course
+            </a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+                        About
+                    </h3>
+                    <ul class="mt-4 space-y-4">
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                                Our Mission
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                                Team
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                                Careers
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+                        Resources
+                    </h3>
+                    <ul class="mt-4 space-y-4">
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                                Blog
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                                Webinars
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                                Lesson Plans
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+                        Support
+                    </h3>
+                    <ul class="mt-4 space-y-4">
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                                Help Center
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                                Contact Us
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                                Privacy Policy
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+                        Connect
+                    </h3>
+                    <ul class="mt-4 space-y-4">
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                                Twitter
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                                Facebook
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                                YouTube
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-12 border-t border-gray-700 pt-8">
+                <p class="text-base text-gray-400 text-center">
+                    &copy; 2023 EduPlay. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+
+        function goToLink(url) {
+  window.location.href = url;
+}
+
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            const expanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+            mobileMenuButton.setAttribute('aria-expanded', !expanded);
+            mobileMenu.classList.toggle('hidden');
+            
+            // Toggle between menu and x icon
+            const icon = mobileMenuButton.querySelector('i');
+            if (expanded) {
+                icon.setAttribute('data-feather', 'menu');
+            } else {
+                icon.setAttribute('data-feather', 'x');
+            }
+            feather.replace();
+        });
+
+        // Language dropdown toggle
+        const languageDropdown = document.getElementById('language-dropdown');
+        const languageMenu = document.getElementById('language-menu');
+        
+        languageDropdown.addEventListener('click', () => {
+            languageMenu.classList.toggle('hidden');
+        });
+
+        // Mobile language dropdown toggle
+        const mobileLanguageDropdown = document.getElementById('mobile-language-dropdown');
+        const mobileLanguageMenu = document.getElementById('mobile-language-menu');
+        
+        mobileLanguageDropdown.addEventListener('click', () => {
+            mobileLanguageMenu.classList.toggle('hidden');
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!languageDropdown.contains(e.target) && !languageMenu.contains(e.target)) {
+                languageMenu.classList.add('hidden');
+            }
+            if (!mobileLanguageDropdown.contains(e.target) && !mobileLanguageMenu.contains(e.target)) {
+                mobileLanguageMenu.classList.add('hidden');
+            }
+        });
+
+        // Initialize IndexedDB for offline data
+        function initIndexedDB() {
+            const request = indexedDB.open('EduPlayDB', 1);
+
+            request.onupgradeneeded = (event) => {
+                const db = event.target.result;
+                if (!db.objectStoreNames.contains('courses')) {
+                    db.createObjectStore('courses', { keyPath: 'id' });
+                }
+                if (!db.objectStoreNames.contains('gameProgress')) {
+                    db.createObjectStore('gameProgress', { keyPath: 'gameId' });
+                }
+            };
+
+            request.onsuccess = (event) => {
+                console.log('IndexedDB initialized successfully');
+            };
+
+            request.onerror = (event) => {
+                console.error('IndexedDB error:', event.target.error);
+            };
+        }
+
+        // Call initialization functions
+        document.addEventListener('DOMContentLoaded', () => {
+            feather.replace();
+            initIndexedDB();
+        });
+    </script>
+</body>
+</html>

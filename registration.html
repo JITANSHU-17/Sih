@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register - STEM Platform</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 10px;
+    position: relative;
+  }
+
+  .back-home {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #fff;
+    color: #2575fc;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-weight: bold;
+    border: 1px solid #2575fc;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+  }
+  .back-home:hover {
+    background: #2575fc;
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  .register-container {
+    background: #fff;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 380px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    animation: fadeIn 0.5s ease;
+  }
+  @keyframes fadeIn {
+    from {opacity: 0; transform: translateY(10px);}
+    to {opacity: 1; transform: translateY(0);}
+  }
+
+  .tabs {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ddd;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .tab {
+    flex: 1;
+    text-align: center;
+    padding: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #555;
+    transition: background 0.2s, color 0.2s;
+  }
+  .tab:hover { background: #f3f3f3; }
+  .tab.active { background: #2575fc; color: #fff; }
+
+  .form {
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+  .form.active { display: block; }
+  .form h3 { margin-top: 0; font-size: 20px; color: #333; text-align: center; }
+
+  .form-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 15px;
+  }
+  .form input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    transition: border 0.2s, box-shadow 0.2s;
+  }
+  .form input:focus {
+    border-color: #2575fc;
+    outline: none;
+    box-shadow: 0 0 4px rgba(37,117,252,0.5);
+  }
+  .form button {
+    width: 100%;
+    padding: 12px;
+    background: #2575fc;
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .form button:hover { background: #1b5fd9; }
+
+  .login-quote {
+    margin-top: 20px;
+    padding: 15px;
+    border-left: 4px solid #2575fc;
+    background: #f9f9f9;
+    font-style: italic;
+    text-align: center;
+    border-radius: 6px;
+    color: #555;
+    transition: transform 0.2s, background 0.2s;
+  }
+  .login-quote:hover {
+    background: #eef3ff;
+    transform: translateY(-2px);
+    cursor: pointer;
+  }
+  .login-quote span {
+    color: #2575fc;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+
+  @media (max-width: 400px) {
+    .register-container { padding: 20px; }
+    .form input, .form button { font-size: 14px; padding: 10px; }
+    .back-home { padding: 6px 12px; font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Back to Home Button -->
+<button class="back-home" onclick="goHome()">Back to Home</button>
+
+<div class="register-container">
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('student')">Student</div>
+    <div class="tab" onclick="switchTab('admin')">Admin/Teacher</div>
+  </div>
+
+  <!-- Student Registration -->
+  <div id="student" class="form active">
+    <h3>Student Registration</h3>
+    <div class="form-inner">
+      <input type="text" id="student-name" placeholder="Full Name" required>
+      <input type="text" id="student-username" placeholder="Username" required>
+      <input type="email" id="student-email" placeholder="Email" required>
+      <input type="password" id="student-password" placeholder="Password" required>
+      <input type="password" id="student-confirm-password" placeholder="Confirm Password" required>
+      <button onclick="register('student')">Register</button>
+      <div class="login-quote" onclick="redirectToLogin()">
+        Already registered? <span>Login Now</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin Registration -->
+  <div id="admin" class="form">
+    <h3>Admin/Teacher Registration</h3>
+    <div class="form-inner">
+      <input type="text" id="admin-name" placeholder="Full Name" required>
+      <input type="text" id="admin-username" placeholder="Username" required>
+      <input type="email" id="admin-email" placeholder="Email" required>
+      <input type="password" id="admin-password" placeholder="Password" required>
+      <input type="password" id="admin-confirm-password" placeholder="Confirm Password" required>
+      <button onclick="register('admin')">Register</button>
+      <div class="login-quote" onclick="redirectToLogin()">
+        Already registered? <span>Login Now</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.form').forEach(f => f.classList.remove('active'));
+  document.querySelector('.tab[onclick="switchTab(\'' + tab + '\')"]').classList.add('active');
+  document.getElementById(tab).classList.add('active');
+}
+
+function register(type) {
+  let name = document.getElementById(type + '-name').value;
+  let username = document.getElementById(type + '-username').value;
+  let email = document.getElementById(type + '-email').value;
+  let password = document.getElementById(type + '-password').value;
+  let confirmPassword = document.getElementById(type + '-confirm-password').value;
+
+  if (!name || !username || !email || !password || !confirmPassword) {
+    alert("Please fill all fields.");
+    return;
+  }
+  if (password !== confirmPassword) {
+    alert("Passwords do not match.");
+    return;
+  }
+  alert(type.toUpperCase() + " registration successful for " + username);
+}
+
+function redirectToLogin() {
+  window.location.href = "login.html";
+}
+
+function goHome() {
+  window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>

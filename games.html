@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games - EduPlay</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/parser-js@latest/dist/parser.min.js"></script>
+    <style>
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .game-badge {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i data-feather="book-open" class="text-indigo-600 h-8 w-8"></i>
+                        <span class="ml-2 text-xl font-bold text-gray-900">EduPlay</span>
+                    </div>
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="index.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            Home
+                        </a>
+                        <a href="courses.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            Courses
+                        </a>
+                        <a href="#" class="border-indigo-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            Games
+                        </a>
+                        <a href="teacher.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            Teacher Dashboard
+                        </a>
+                    </div>
+                </div>
+                <div class="hidden sm:ml-6 sm:flex sm:items-center">
+                    <div class="relative ml-3">
+                        <div class="flex space-x-4">
+                            <button class="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700" onclick="goToLink('./login.html')">
+                                Login
+                            </button>
+                            <div class="relative">
+                                <button id="language-dropdown" class="flex items-center text-gray-500 hover:text-gray-700">
+                                    <i data-feather="globe" class="h-5 w-5"></i>
+                                    <span class="ml-1">English</span>
+                                    <i data-feather="chevron-down" class="ml-1 h-4 w-4"></i>
+                                </button>
+                                <div id="language-menu" class="hidden absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                                    <div class="py-1">
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">English</a>
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">हिंदी (Hindi)</a>
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">ଓଡ଼ିିଆ (Odia)</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="-mr-2 flex items-center sm:hidden">
+                    <button type="button" id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                        <i data-feather="menu" class="block h-6 w-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden sm:hidden">
+            <div class="pt-2 pb-3 space-y-1">
+                <a href="index.html" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Home</a>
+                <a href="courses.html" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Courses</a>
+                <a href="#" class="bg-indigo-50 border-indigo-500 text-indigo-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Games</a>
+                <a href="teacher.html" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Teacher Dashboard</a>
+            </div>
+            <div class="pt-4 pb-3 border-t border-gray-200">
+                <div class="flex items-center px-4 space-x-3">
+                    <button class="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700">
+                        Login
+                    </button>
+                    <div class="relative">
+                        <button id="mobile-language-dropdown" class="flex items-center text-gray-500 hover:text-gray-700">
+                            <i data-feather="globe" class="h-5 w-5"></i>
+                            <span class="ml-1">English</span>
+                            <i data-feather="chevron-down" class="ml-1 h-4 w-4"></i>
+                        </button>
+                        <div id="mobile-language-menu" class="hidden absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                            <div class="py-1">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">English</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">हिंदी (Hindi)</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">ଓଡ଼ିିିଆ (Odia)</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Games Header -->
+    <div class="bg-white">
+        <div class="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl" data-aos="fade-down">
+                    Learning Through Play
+                </h1>
+                <p class="mt-6 max-w-lg mx-auto text-xl text-gray-500" data-aos="fade-up" data-aos-delay="100">
+                    Educational games that make learning fun and engaging for all ages.
+                </p>
+                <div class="mt-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="inline-flex rounded-md shadow">
+                        <a href="#" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
+                            Filter Games
+                            <i data-feather="filter" class="ml-2 h-4 w-4"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Games Grid -->
+    <div class="bg-gray-50 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                <!-- Game 1 -->
+                <div class="game-card bg-white rounded-lg shadow-md overflow-hidden transition duration-300 ease-in-out relative" data-aos="fade-up">
+                    <div class="h-48 bg-blue-100 flex items-center justify-center relative">
+                        <i data-feather="cpu" class="h-16 w-16 text-blue-600"></i>
+                        <span class="game-badge bg-yellow-400 text-yellow-900">New</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-medium text-gray-900">Math Quest</h3>
+                        <p class="mt-2 text-gray-500">
+                            Adventure game that teaches arithmetic and problem-solving skills.
+                        </p>
+                        <div class="mt-4 flex justify-between items-center">
+                            <div>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    Mathematics
+                                </span>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 ml-1">
+                                    Ages 8-12
+                                </span>
+                            </div>
+                            <div class="text-sm text-gray-500">
+                                <i data-feather="star" class="h-4 w-4 text-yellow-400 inline"></i> 4.8
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <button onclick="launchGame('math-quest')" class="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700">
+                                <i data-feather="play" class="mr-2 h-4 w-4"></i> Play Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Game 2 -->
+                <div class="game-card bg-white rounded-lg shadow-md overflow-hidden transition duration-300 ease-in-out relative" data-aos="fade-up" data-aos-delay="100">
+                    <div class="h-48 bg-green-100 flex items-center justify-center">
+                        <i data-feather="atom" class="h-16 w-16 text-green-600"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-medium text-gray-900">Science Lab</h3>
+                        <p class="mt-2 text-gray-500">
+                            Virtual experiments and chemistry puzzles in a lab setting.
+                        </p>
+                        <div class="mt-4 flex justify-between items-center">
+                            <div>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                                    Science
+                                </span>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 ml-1">
+                                    Ages 10-14
+                                </span>
+                            </div>
+                            <div class="text-sm text-gray-500">
+                                <i data-feather="star" class="h-4 w-4 text-yellow-400 inline"></i> 4.6
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <button onclick="launchGame('science-lab')" class="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700">
+                                <i data-feather="play" class="mr-2 h-4 w-4"></i> Play Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Game 3 -->
+                <div class="game-card bg-white rounded-lg shadow-md overflow-hidden transition duration-300 ease-in-out relative" data-aos="fade-up" data-aos-delay="200">
+                    <div class="h-48 bg-purple-100 flex items-center justify-center">
+                        <i data-feather="code" class="h-16 w-16 text-purple-600"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-medium text-gray-900">Code Builder</h3>
+                        <p class="mt-2 text-gray-500">
+                            Learn programming logic through block-based coding challenges.
+                        </p>
+                        <div class="mt-4 flex justify-between items-center">
+                            <div>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
+                                    Coding
+                                </span>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 ml-1">
+                                    Ages 7+
+                                </span>
+                            </div>
+                            <div class="text-sm text-gray-500">
+                                <i data-feather="star" class="h-4 w-4 text-yellow-400 inline"></i> 4.9
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <button onclick="launchGame('code-builder')" class="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700">
+                                <i data-feather="play" class="mr-2 h-4 w-4"></i> Play Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Game 4 -->
+                <div class="game-card bg-white rounded-lg shadow-md overflow-hidden transition duration-300 ease-in-out relative" data-aos="fade-up">
+                    <div class="h-48 bg-yellow-100 flex items-center justify-center">
+                        <i data-feather="globe" class="h-16 w-16 text-yellow-600"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-medium text-gray-900">Geo Explorer</h3>
+                        <p class="mt-2 text-gray-500">
+                            Interactive world map with geography quizzes and cultural facts.
+                        </p>
+                        <div class="mt-4 flex justify-between items-center">
+                            <div>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                    Geography
+                                </span>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 ml-1">
+                                    Ages 9-13
+                                </span>
+                            </div>
+                            <div class="text-sm text-gray-500">
+                                <i data-feather="star" class="h-4 w-4 text-yellow-400 inline"></i> 4.5
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <button onclick="launchGame('geo-explorer')" class="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700">
+                                <i data-feather="play" class="mr-2 h-4 w-4"></i> Play Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Game 5 -->
+                <div class="game-card bg-white rounded-lg shadow-md overflow-hidden transition duration-300 ease-in-out relative" data-aos="fade-up" data-aos-delay="100">
+                    <div class="h-48 bg-red-100 flex items-center justify-center relative">
+                        <i data-feather="book" class="h-16 w-16 text-red-600"></i>
+                        <span class="game-badge bg-red-500 text-white">Popular</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-medium text-gray-900">Word Master</h3>
+                        <p class="mt-2 text-gray-500">
+                            Vocabulary builder with word puzzles and spelling challenges.
+                        </p>
+                        <div class="mt-4 flex justify-between items-center">
+                            <div>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-pink-100 text-pink-800">
+                                    Language
+                                </span>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 ml-1">
+                                    Ages 6-12
+                                </span>
+                            </div>
+                            <div class="text-sm text-gray-500">
+                                <i data-feather="star" class="h-4 w-4 text-yellow-400 inline"></i> 4.7
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <button onclick="launchGame('word-master')" class="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700">
+                                <i data-feather="play" class="mr-2 h-4 w-4"></i> Play Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Game 6 -->
+                <div class="game-card bg-white rounded-lg shadow-md overflow-hidden transition duration-300 ease-in-out relative" data-aos="fade-up" data-aos-delay="200">
+                    <div class="h-48 bg-indigo-100 flex items-center justify-center">
+                        <i data-feather="clock" class="h-16 w-16 text-indigo-600"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-medium text-gray-900">Time Traveler</h3>
+                        <p class="mt-2 text-gray-500">
+                            Historical adventure game with time-based math problems.
+                        </p>
+                        <div class="mt-4 flex justify-between items-center">
+                            <div>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+                                    History
+                                </span>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 ml-1">
+                                    Ages 8-14
+                                </span>
+                            </div>
+                            <div class="text-sm text-gray-500">
+                                <i data-feather="star" class="h-4 w-4 text-yellow-400 inline"></i> 4.4
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <button onclick="launchGame('time-traveler')" class="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700">
+                                <i data-feather="play" class="mr-2 h-4 w-4"></i> Play Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center">
+                <button class="inline-flex items-center px-6 py-3 border border-gray-300 shadow-sm text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Load More Games
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Categories -->
+    <div class="bg-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl" data-aos="fade-down">
+                    Game Categories
+                </h2>
+                <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-500" data-aos="fade-up" data-aos-delay="100">
+                    Explore games by subject area and age group
+                </p>
+            </div>
+            <div class="mt-10 grid grid-cols-2 gap-8 md:grid-cols-4">
+                <div class="text-center" data-aos="fade-up" data-aos-delay="200">
+                    <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-blue-100">
+                        <i data-feather="box" class="h-8 w-8 text-blue-600"></i>
+                    </div>
+                    <h3 class="mt-4 text-lg font-medium text-gray-900">Mathematics</h3>
+                    <p class="mt-2 text-sm text-gray-500">
+                        Arithmetic, algebra, geometry and more
+                    </p>
+                </div>
+                <div class="text-center" data-aos="fade-up" data-aos-delay="300">
+                    <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100">
+                        <i data-feather="atom" class="h-8 w-8 text-green-600"></i>
+                    </div>
+                    <h3 class="mt-4 text-lg font-medium text-gray-900">Science</h3>
+                    <p class="mt-2 text-sm text-gray-500">
+                        Physics, chemistry, biology experiments
+                    </p>
+                </div>
+                <div class="text-center" data-aos="fade-up" data-aos-delay="400">
+                    <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-purple-100">
+                        <i data-feather="book" class="h-8 w-8 text-purple-600"></i>
+                    </div>
+                    <h3 class="mt-4 text-lg font-medium text-gray-900">Language</h3>
+                    <p class="mt-2 text-sm text-gray-500">
+                        Vocabulary, grammar, reading comprehension
+                    </p>
+                </div>
+                <div class="text-center" data-aos="fade-up" data-aos-delay="500">
+                    <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-yellow-100">
+                        <i data-feather="globe" class="h-8 w-8 text-yellow-600"></i>
+                    </div>
+                    <h3 class="mt-4 text-lg font-medium text-gray-900">Social Studies</h3>
+                    <p class="mt-2 text-sm text-gray-500">
+                        Geography, history, civics
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="bg-indigo-700">
+        <div class="max-w-2xl mx-auto text-center py-16 px-4 sm:py-20 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-extrabold text-white sm:text-4xl">
+                <span class="block">Want to create your own game?</span>
+                <span class="block">Try our Game Builder.</span>
+            </h2>
+            <p class="mt-4 text-lg leading-6 text-indigo-200">
+                Design custom educational games for your classroom with our easy-to-use tools.
+            </p>
+            <a href="#" class="mt-8 w-full inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50 sm:w-auto">
+                Get Started
+            </a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+                        About
+                    </h3>
+                    <ul class="mt-4 space-y-4">
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                                Our Mission
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                                Team
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                                Careers
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+                        Resources
+                    </h3>
+                    <ul class="mt-4 space-y-4">
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                                Blog
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                                Webinars
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                                Lesson Plans
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+                        Support
+                    </h3>
+                    <ul class="mt-4 space-y-4">
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                                Help Center
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                                Contact Us
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                                Privacy Policy
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+                        Connect
+                    </h3>
+                    <ul class="mt-4 space-y-4">
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                                Twitter
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                                Facebook
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                                YouTube
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-12 border-t border-gray-700 pt-8">
+                <p class="text-base text-gray-400 text-center">
+                    &copy; 2023 EduPlay. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Game Modal -->
+    <div id="game-modal" class="fixed z-50 inset-0 overflow-y-auto hidden">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full sm:p-6">
+                <div>
+                    <div class="flex justify-between items-start">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="game-modal-title">Game Title</h3>
+                        <button onclick="closeGameModal()" class="text-gray-400 hover:text-gray-500">
+                            <i data-feather="x" class="h-6 w-6"></i>
+                        </button>
+                    </div>
+                    <div class="mt-4">
+                        <div id="game-container" class="w-full h-96 bg-gray-100 rounded-lg flex items-center justify-center">
+                            <p class="text-gray-500">Loading game...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-5 sm:mt-6">
+                    <button type="button" onclick="closeGameModal()" class="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm">
+                        Close Game
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        function goToLink(url) {
+  window.location.href = url;
+}
+
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            const expanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+            mobileMenuButton.setAttribute('aria-expanded', !expanded);
+            mobileMenu.classList.toggle('hidden');
+            
+            // Toggle between menu and x icon
+            const icon = mobileMenuButton.querySelector('i');
+            if (expanded) {
+                icon.setAttribute('data-feather', 'menu');
+            } else {
+                icon.setAttribute('data-feather', 'x');
+            }
+            feather.replace();
+        });
+
+        // Language dropdown toggle
+        const languageDropdown = document.getElementById('language-dropdown');
+        const languageMenu = document.getElementById('language-menu');
+        
+        languageDropdown.addEventListener('click', () => {
+            languageMenu.classList.toggle('hidden');
+        });
+
+        // Mobile language dropdown toggle
+        const mobileLanguageDropdown = document.getElementById('mobile-language-dropdown');
+        const mobileLanguageMenu = document.getElementById('mobile-language-menu');
+        
+        mobileLanguageDropdown.addEventListener('click', () => {
+            mobileLanguageMenu.classList.toggle('hidden');
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!languageDropdown.contains(e.target) && !languageMenu.contains(e.target)) {
+                languageMenu.classList.add('hidden');
+            }
+            if (!mobileLanguageDropdown.contains(e.target) && !mobileLanguageMenu.contains(e.target)) {
+                mobileLanguageMenu.classList.add('hidden');
+            }
+        });
+
+        // Game functions
+        function launchGame(gameId) {
+            const gameModal = document.getElementById('game-modal');
+            const gameTitle = document.getElementById('game-modal-title');
+            const gameContainer = document.getElementById('game-container');
+            
+            // Set game title based on ID
+            switch(gameId) {
+                case 'math-quest':
+                    gameTitle.textContent = 'Math Quest';
+                    break;
+                case 'science-lab':
+                    gameTitle.textContent = 'Science Lab';
+                    break;
+                case 'code-builder':
+                    gameTitle.textContent = 'Code Builder';
+                    break;
+                case 'geo-explorer':
+                    gameTitle.textContent = 'Geo Explorer';
+                    break;
+                case 'word-master':
+                    gameTitle.textContent = 'Word Master';
+                    break;
+                case 'time-traveler':
+                    gameTitle.textContent = 'Time Traveler';
+                    break;
+            }
+            
+            // Show loading message
+            gameContainer.innerHTML = '<p class="text-gray-500">Loading game...</p>';
+            
+            // Show modal
+            gameModal.classList.remove('hidden');
+            
+            // Simulate game loading (in a real app, this would load the actual game)
+            setTimeout(() => {
+                // Example of using parser.js to create a simple math game
+                if (gameId === 'math-quest') {
+                    const mathGame = `
+                        <div class="w-full h-full p-4">
+                            <h4 class="text-lg font-medium text-center mb-4">Solve the Math Problem</h4>
+                            <div id="math-problem" class="text-2xl font-bold text-center mb-6">5 + 3 = ?</div>
+                            <div class="grid grid-cols-3 gap-4">
+                                <button onclick="checkAnswer(7)" class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-bold py-4 rounded-lg">7</button>
+                                <button onclick="checkAnswer(8)" class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-bold py-4 rounded-lg">8</button>
+                                <button onclick="checkAnswer(9)" class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-bold py-4 rounded-lg">9</button>
+                                <button onclick="checkAnswer(10)" class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-bold py-4 rounded-lg">10</button>
+                                <button onclick="checkAnswer(15)" class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-bold py-4 rounded-lg">15</button>
+                                <button onclick="checkAnswer(2)" class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-bold py-4 rounded-lg">2</button>
+                            </div>
+                            <div id="feedback" class="mt-4 text-center"></div>
+                        </div>
+                    `;
+                    gameContainer.innerHTML = mathGame;
+                } else {
+                    // For other games, show a placeholder
+                    gameContainer.innerHTML = `
+                        <div class="text-center">
+                            <i data-feather="play" class="h-16 w-16 text-indigo-600 mx-auto"></i>
+                            <p class="mt-4 text-gray-500">This game would load here in the full application.</p>
+                        </div>
+                    `;
+                    feather.replace();
+                }
+            }, 1000);
+        }
+
+        function closeGameModal() {
+            document.getElementById('game-modal').classList.add('hidden');
+        }
+
+        // Example game function (would be more complex in a real app)
+        function checkAnswer(answer) {
+            const feedback = document.getElementById('feedback');
+            if (answer === 8) {
+                feedback.innerHTML = '<p class="text-green-600 font-medium">Correct! Well done!</p>';
+                setTimeout(() => {
+                    document.getElementById('math-problem').textContent = '7 + 4 = ?';
+                    feedback.innerHTML = '';
+                }, 1500);
+            } else {
+                feedback.innerHTML = '<p class="text-red-600 font-medium">Try again!</p>';
+            }
+        }
+
+        // Initialize IndexedDB for offline data
+        function initIndexedDB() {
+            const request = indexedDB.open('EduPlayGamesDB', 1);
+
+            request.onupgradeneeded = (event) => {
+                const db = event.target.result;
+                if (!db.objectStoreNames.contains('games')) {
+                    db.createObjectStore('games', { keyPath: 'id' });
+                }
+                if (!db.objectStoreNames.contains('gameProgress')) {
+                    db.createObjectStore('gameProgress', { keyPath: 'gameId' });
+                }
+            };
+
+            request.onsuccess = (event) => {
+                console.log('IndexedDB initialized successfully');
+            };
+
+            request.onerror = (event) => {
+                console.error('IndexedDB error:', event.target.error);
+            };
+        }
+
+        // Initialize IndexedDB when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            initIndexedDB();
+            feather.replace();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduPlay - Gamified Learning Platform</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .hero-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i data-feather="book-open" class="text-indigo-600 h-8 w-8"></i>
+                        <span class="ml-2 text-xl font-bold text-gray-900">EduPlay</span>
+                    </div>
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="#" class="border-indigo-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            Home
+                        </a>
+                        <a href="courses.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            Courses
+                        </a>
+                        <a href="games.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            Games
+                        </a>
+                        <a href="teacher.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            Teacher Dashboard
+                        </a>
+                    </div>
+                </div>
+                <div class="hidden sm:ml-6 sm:flex sm:items-center">
+                    <div class="relative ml-3">
+                        <div class="flex space-x-4">
+                            <button class="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700" onclick="goToLink('./login.html')">
+                                Login
+                            </button>
+                            <div class="relative">
+                                <button id="language-dropdown" class="flex items-center text-gray-500 hover:text-gray-700">
+                                    <i data-feather="globe" class="h-5 w-5"></i>
+                                    <span class="ml-1">English</span>
+                                    <i data-feather="chevron-down" class="ml-1 h-4 w-4"></i>
+                                </button>
+                                <div id="language-menu" class="hidden absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                                    <div class="py-1">
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">English</a>
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">हिंदी (Hindi)</a>
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">ଓଡ଼ିଆ (Odia)</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="-mr-2 flex items-center sm:hidden">
+                    <button type="button" id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                        <i data-feather="menu" class="block h-6 w-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden sm:hidden">
+            <div class="pt-2 pb-3 space-y-1">
+                <a href="#" class="bg-indigo-50 border-indigo-500 text-indigo-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Home</a>
+                <a href="courses.html" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Courses</a>
+                <a href="games.html" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Games</a>
+                <a href="teacher.html" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Teacher Dashboard</a>
+            </div>
+            <div class="pt-4 pb-3 border-t border-gray-200">
+                <div class="flex items-center px-4 space-x-3">
+                    <button class="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700">
+                        Login
+                    </button>
+                    <div class="relative">
+                        <button id="mobile-language-dropdown" class="flex items-center text-gray-500 hover:text-gray-700">
+                            <i data-feather="globe" class="h-5 w-5"></i>
+                            <span class="ml-1">English</span>
+                            <i data-feather="chevron-down" class="ml-1 h-4 w-4"></i>
+                        </button>
+                        <div id="mobile-language-menu" class="hidden absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                            <div class="py-1">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">English</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">हिंदी (Hindi)</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">ଓଡ଼ିଆ (Odia)</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-gradient text-white">
+        <div class="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl" data-aos="fade-down">
+                    Learn STEM Through Play
+                </h1>
+                <p class="mt-6 max-w-lg mx-auto text-xl" data-aos="fade-up" data-aos-delay="100">
+                    Our gamified platform makes learning science, technology, engineering, and math fun and engaging for students of all ages.
+                </p>
+                <div class="mt-10 flex justify-center space-x-4" data-aos="fade-up" data-aos-delay="200">
+                    <a href="courses.html" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-white hover:bg-gray-50">
+                        Explore Courses
+                    </a>
+                    <a href="games.html" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-800 bg-opacity-60 hover:bg-opacity-70">
+                        Play Games
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:text-center">
+                <h2 class="text-base text-indigo-600 font-semibold tracking-wide uppercase" data-aos="fade-up">Features</h2>
+                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl" data-aos="fade-up" data-aos-delay="100">
+                    A better way to learn STEM
+                </p>
+            </div>
+
+            <div class="mt-10">
+                <div class="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
+                    <div class="relative" data-aos="fade-up" data-aos-delay="200">
+                        <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                            <i data-feather="cpu"></i>
+                        </div>
+                        <p class="ml-16 text-lg leading-6 font-medium text-gray-900">Interactive Games</p>
+                        <p class="mt-2 ml-16 text-base text-gray-500">
+                            Learn complex STEM concepts through engaging Phaser.js games aligned with curriculum standards.
+                        </p>
+                    </div>
+
+                    <div class="relative" data-aos="fade-up" data-aos-delay="300">
+                        <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                            <i data-feather="wifi-off"></i>
+                        </div>
+                        <p class="ml-16 text-lg leading-6 font-medium text-gray-900">Offline Support</p>
+                        <p class="mt-2 ml-16 text-base text-gray-500">
+                            Service Workers and IndexedDB allow learning even without internet connectivity.
+                        </p>
+                    </div>
+
+                    <div class="relative" data-aos="fade-up" data-aos-delay="400">
+                        <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                            <i data-feather="globe"></i>
+                        </div>
+                        <p class="ml-16 text-lg leading-6 font-medium text-gray-900">Multilingual</p>
+                        <p class="mt-2 ml-16 text-base text-gray-500">
+                            Content available in English, Hindi, and Odia to support diverse learners.
+                        </p>
+                    </div>
+
+                    <div class="relative" data-aos="fade-up" data-aos-delay="500">
+                        <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                            <i data-feather="bar-chart-2"></i>
+                        </div>
+                        <p class="ml-16 text-lg leading-6 font-medium text-gray-900">Progress Tracking</p>
+                        <p class="mt-2 ml-16 text-base text-gray-500">
+                            Detailed analytics dashboard for teachers to monitor student progress and performance.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popular Games Section -->
+    <div class="bg-gray-50 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:text-center mb-12">
+                <h2 class="text-base text-indigo-600 font-semibold tracking-wide uppercase" data-aos="fade-up">Featured</h2>
+                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl" data-aos="fade-up" data-aos-delay="100">
+                    Popular STEM Games
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                <div class="game-card bg-white rounded-lg shadow-md overflow-hidden transition duration-300 ease-in-out" data-aos="fade-up" data-aos-delay="200">
+                    <div class="h-48 bg-indigo-100 flex items-center justify-center">
+                        <i data-feather="box" class="h-16 w-16 text-indigo-600"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-medium text-gray-900">Geometry Builder</h3>
+                        <p class="mt-2 text-gray-500">
+                            Construct geometric shapes and learn about angles, perimeter, and area through interactive challenges.
+                        </p>
+                        <div class="mt-4">
+                            <a href="game-detail.html" class="text-indigo-600 hover:text-indigo-500 font-medium">
+                                Play Now <span aria-hidden="true">&rarr;</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-card bg-white rounded-lg shadow-md overflow-hidden transition duration-300 ease-in-out" data-aos="fade-up" data-aos-delay="300">
+                    <div class="h-48 bg-green-100 flex items-center justify-center">
+                        <i data-feather="atom" class="h-16 w-16 text-green-600"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-medium text-gray-900">Chemistry Lab</h3>
+                        <p class="mt-2 text-gray-500">
+                            Mix elements and compounds in a virtual lab to discover chemical reactions and properties.
+                        </p>
+                        <div class="mt-4">
+                            <a href="game-detail.html" class="text-indigo-600 hover:text-indigo-500 font-medium">
+                                Play Now <span aria-hidden="true">&rarr;</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-card bg-white rounded-lg shadow-md overflow-hidden transition duration-300 ease-in-out" data-aos="fade-up" data-aos-delay="400">
+                    <div class="h-48 bg-yellow-100 flex items-center justify-center">
+                        <i data-feather="code" class="h-16 w-16 text-yellow-600"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-medium text-gray-900">Code Quest</h3>
+                        <p class="mt-2 text-gray-500">
+                            Solve programming puzzles by writing algorithms to guide your character through challenges.
+                        </p>
+                        <div class="mt-4">
+                            <a href="game-detail.html" class="text-indigo-600 hover:text-indigo-500 font-medium">
+                                Play Now <span aria-hidden="true">&rarr;</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center">
+                <a href="games.html" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700">
+                    View All Games
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Testimonials -->
+    <div class="bg-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:text-center mb-12">
+                <h2 class="text-base text-indigo-600 font-semibold tracking-wide uppercase" data-aos="fade-up">Testimonials</h2>
+                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl" data-aos="fade-up" data-aos-delay="100">
+                    What educators are saying
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+                <div class="bg-gray-50 p-6 rounded-lg" data-aos="fade-up" data-aos-delay="200">
+                    <div class="flex items-center mb-4">
+                        <img class="h-12 w-12 rounded-full" src="http://static.photos/people/200x200/1" alt="Teacher">
+                        <div class="ml-4">
+                            <h4 class="text-lg font-medium text-gray-900">Priya Sharma</h4>
+                            <p class="text-gray-500">Math Teacher, Delhi</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">
+                        "My students are more engaged than ever with the geometry games. They're learning complex concepts without even realizing it!"
+                    </p>
+                </div>
+
+                <div class="bg-gray-50 p-6 rounded-lg" data-aos="fade-up" data-aos-delay="300">
+                    <div class="flex items-center mb-4">
+                        <img class="h-12 w-12 rounded-full" src="http://static.photos/people/200x200/2" alt="Teacher">
+                        <div class="ml-4">
+                            <h4 class="text-lg font-medium text-gray-900">Rajesh Patel</h4>
+                            <p class="text-gray-500">Science Teacher, Mumbai</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">
+                        "The chemistry lab game has transformed how I teach reactions. Students can experiment safely and see immediate results."
+                    </p>
+                </div>
+
+                <div class="bg-gray-50 p-6 rounded-lg" data-aos="fade-up" data-aos-delay="400">
+                    <div class="flex items-center mb-4">
+                        <img class="h-12 w-12 rounded-full" src="http://static.photos/people/200x200/3" alt="Teacher">
+                        <div class="ml-4">
+                            <h4 class="text-lg font-medium text-gray-900">Sunita Das</h4>
+                            <p class="text-gray-500">Computer Teacher, Bhubaneswar</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">
+                        "Code Quest has made programming accessible to all my students, even those who were initially intimidated by coding."
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="bg-indigo-700">
+        <div class="max-w-2xl mx-auto text-center py-16 px-4 sm:py-20 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-extrabold text-white sm:text-4xl" data-aos="fade-up">
+                <span class="block">Ready to transform STEM education?</span>
+                <span class="block">Start using EduPlay today.</span>
+            </h2>
+            <p class="mt-4 text-lg leading-6 text-indigo-200" data-aos="fade-up" data-aos-delay="100">
+                Join thousands of educators who are making learning fun and effective.
+            </p>
+            <a href="#" class="mt-8 w-full inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50 sm:w-auto" data-aos="fade-up" data-aos-delay="200">
+                Sign up for free
+            </a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+                        About
+                    </h3>
+                    <ul class="mt-4 space-y-4">
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                                Our Mission
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                                Team
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                                Careers
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+                        Resources
+                    </h3>
+                    <ul class="mt-4 space-y-4">
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                                Blog
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                                Webinars
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                                Lesson Plans
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+                        Support
+                    </h3>
+                    <ul class="mt-4 space-y-4">
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                                Help Center
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                                Contact Us
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                                Privacy Policy
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+                        Connect
+                    </h3>
+                    <ul class="mt-4 space-y-4">
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                                Twitter
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                                Facebook
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">
+                                YouTube
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-12 border-t border-gray-700 pt-8">
+                <p class="text-base text-gray-400 text-center">
+                    &copy; 2023 EduPlay. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+
+            function goToLink(url) {
+        window.location.href = url;
+      }
+
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            const expanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+            mobileMenuButton.setAttribute('aria-expanded', !expanded);
+            mobileMenu.classList.toggle('hidden');
+            
+            // Toggle between menu and x icon
+            const icon = mobileMenuButton.querySelector('i');
+            if (expanded) {
+                icon.setAttribute('data-feather', 'menu');
+            } else {
+                icon.setAttribute('data-feather', 'x');
+            }
+            feather.replace();
+        });
+
+        // Language dropdown toggle
+        const languageDropdown = document.getElementById('language-dropdown');
+        const languageMenu = document.getElementById('language-menu');
+        
+        languageDropdown.addEventListener('click', () => {
+            languageMenu.classList.toggle('hidden');
+        });
+
+        // Mobile language dropdown toggle
+        const mobileLanguageDropdown = document.getElementById('mobile-language-dropdown');
+        const mobileLanguageMenu = document.getElementById('mobile-language-menu');
+        
+        mobileLanguageDropdown.addEventListener('click', () => {
+            mobileLanguageMenu.classList.toggle('hidden');
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!languageDropdown.contains(e.target) && !languageMenu.contains(e.target)) {
+                languageMenu.classList.add('hidden');
+            }
+            if (!mobileLanguageDropdown.contains(e.target) && !mobileLanguageMenu.contains(e.target)) {
+                mobileLanguageMenu.classList.add('hidden');
+            }
+        });
+
+        // Register Service Worker for offline support
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').then(registration => {
+                    console.log('ServiceWorker registration successful');
+                }).catch(err => {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+
+        // Initialize IndexedDB for offline data
+        function initIndexedDB() {
+            const request = indexedDB.open('EduPlayDB', 1);
+
+            request.onupgradeneeded = (event) => {
+                const db = event.target.result;
+                if (!db.objectStoreNames.contains('courses')) {
+                    db.createObjectStore('courses', { keyPath: 'id' });
+                }
+                if (!db.objectStoreNames.contains('gameProgress')) {
+                    db.createObjectStore('gameProgress', { keyPath: 'gameId' });
+                }
+            };
+
+            request.onsuccess = (event) => {
+                console.log('IndexedDB initialized successfully');
+            };
+
+            request.onerror = (event) => {
+                console.error('IndexedDB error:', event.target.error);
+            };
+        }
+
+        // Call initialization functions
+        document.addEventListener('DOMContentLoaded', () => {
+            feather.replace();
+            initIndexedDB();
+        });
+    </script>
+</body>
+</html>

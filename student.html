@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - EduPlay</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/parser-js@latest/dist/parser.min.js"></script>
+    <style>
+        .material-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 20px -6px rgba(0, 0, 0, 0.1), 0 6px 6px -3px rgba(0,0,0,0.04);
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i data-feather="book-open" class="text-indigo-600 h-8 w-8"></i>
+                        <span class="ml-2 text-xl font-bold text-gray-900">EduPlay</span>
+                    </div>
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="index.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            Home
+                        </a>
+                        <a href="courses.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            Courses
+                        </a>
+                        <a href="#" class="border-indigo-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            Dashboard
+                        </a>
+                        <a href="teacher.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            Teacher Dashboard
+                        </a>
+                    </div>
+                </div>
+                <div class="hidden sm:ml-6 sm:flex sm:items-center">
+                    <div class="relative ml-3">
+                        <div class="flex space-x-4">
+                            <button class="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700">
+                                Login
+                            </button>
+                            <div class="relative">
+                                <button id="language-dropdown" class="flex items-center text-gray-500 hover:text-gray-700">
+                                    <i data-feather="globe" class="h-5 w-5"></i>
+                                    <span class="ml-1">English</span>
+                                    <i data-feather="chevron-down" class="ml-1 h-4 w-4"></i>
+                                </button>
+                                <div id="language-menu" class="hidden absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                                    <div class="py-1">
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">English</a>
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">हिंदी (Hindi)</a>
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">ଓଡ଼ିଆ (Odia)</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="-mr-2 flex items-center sm:hidden">
+                    <button type="button" id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                        <i data-feather="menu" class="block h-6 w-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden sm:hidden">
+            <div class="pt-2 pb-3 space-y-1">
+                <a href="index.html" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Home</a>
+                <a href="courses.html" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Courses</a>
+                <a href="#" class="bg-indigo-50 border-indigo-500 text-indigo-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Dashboard</a>
+                <a href="teacher.html" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Teacher Dashboard</a>
+            </div>
+            <div class="pt-4 pb-3 border-t border-gray-200">
+                <div class="flex items-center px-4 space-x-3">
+                    <button class="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700">
+                        Login
+                    </button>
+                    <div class="relative">
+                        <button id="mobile-language-dropdown" class="flex items-center text-gray-500 hover:text-gray-700">
+                            <i data-feather="globe" class="h-5 w-5"></i>
+                            <span class="ml-1">English</span>
+                            <i data-feather="chevron-down" class="ml-1 h-4 w-4"></i>
+                        </button>
+                        <div id="mobile-language-menu" class="hidden absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                            <div class="py-1">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">English</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">हिंदी (Hindi)</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">ଓଡ଼ିଆ (Odia)</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Header -->
+    <div class="bg-white">
+        <div class="max-w-7xl mx-auto py-10 px-4 sm:py-16 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl" data-aos="fade-down">
+                    Student Dashboard
+                </h1>
+                <p class="mt-6 max-w-md mx-auto text-xl text-gray-500" data-aos="fade-up" data-aos-delay="100">
+                    Access your progress, study material, and games easily. Works offline!
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Study Material Section -->
+    <div class="bg-gray-50 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-10 text-center">
+                <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl" data-aos="fade-down">
+                    Download/Access Offline Study Material
+                </h2>
+                <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-500" data-aos="fade-up" data-aos-delay="100">
+                    Quickly download and open your class notes, assignments, and guides—even offline. Materials sync when you reconnect.
+                </p>
+            </div>
+            <div id="material-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Rendered study material cards will appear here -->
+            </div>
+            <div class="mt-8 flex justify-center">
+                <button onclick="showAddMaterialModal()" class="bg-indigo-600 text-white px-5 py-2 rounded-md text-base font-medium hover:bg-indigo-700">
+                    Add New Material
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add Material Modal -->
+    <div id="add-material-modal" class="fixed z-50 inset-0 overflow-y-auto hidden">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg sm:w-full sm:p-6">
+                <form id="add-material-form">
+                    <div>
+                        <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Add New Study Material</h3>
+                        <label class="block mb-2 text-sm text-gray-700">Title</label>
+                        <input type="text" name="title" required class="w-full border rounded px-3 py-2 mb-4" />
+                        <label class="block mb-2 text-sm text-gray-700">Description</label>
+                        <textarea name="description" required class="w-full border rounded px-3 py-2 mb-4"></textarea>
+                        <label class="block mb-2 text-sm text-gray-700">Upload File</label>
+                        <input type="file" name="file" required class="mb-4" />
+                    </div>
+                    <div class="mt-6 flex justify-end space-x-2">
+                        <button type="button" onclick="closeAddMaterialModal()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded">Cancel</button>
+                        <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded">Add Material</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Games Grid -->
+    <div class="bg-gray-50 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl text-center mb-10" data-aos="fade-down">Available Educational Games</h2>
+            <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                <!-- Games cards -->
+                <!-- (You can copy your existing "Game" cards here or leave this section as inspiration for future extension) -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <!-- ... same as your original footer ... -->
+            </div>
+            <div class="mt-12 border-t border-gray-700 pt-8">
+                <p class="text-base text-gray-400 text-center">
+                    &copy; 2023 EduPlay. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize AOS
+        AOS.init({ duration: 800, easing: 'ease-in-out', once: true });
+
+        // Navigation and dropdown logic (your original code, unchanged)
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            const expanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+            mobileMenuButton.setAttribute('aria-expanded', !expanded);
+            mobileMenu.classList.toggle('hidden');
+            const icon = mobileMenuButton.querySelector('i');
+            if (expanded) {
+                icon.setAttribute('data-feather', 'menu');
+            } else {
+                icon.setAttribute('data-feather', 'x');
+            }
+            feather.replace();
+        });
+        const languageDropdown = document.getElementById('language-dropdown');
+        const languageMenu = document.getElementById('language-menu');
+        languageDropdown.addEventListener('click', () => {
+            languageMenu.classList.toggle('hidden');
+        });
+        const mobileLanguageDropdown = document.getElementById('mobile-language-dropdown');
+        const mobileLanguageMenu = document.getElementById('mobile-language-menu');
+        mobileLanguageDropdown.addEventListener('click', () => {
+            mobileLanguageMenu.classList.toggle('hidden');
+        });
+        document.addEventListener('click', (e) => {
+            if (!languageDropdown.contains(e.target) && !languageMenu.contains(e.target)) {
+                languageMenu.classList.add('hidden');
+            }
+            if (!mobileLanguageDropdown.contains(e.target) && !mobileLanguageMenu.contains(e.target)) {
+                mobileLanguageMenu.classList.add('hidden');
+            }
+        });
+
+        // IndexedDB setup for Study Materials
+        let db;
+        function initIndexedDB() {
+            const request = indexedDB.open('EduPlayMaterialsDB', 1);
+            request.onupgradeneeded = (event) => {
+                db = event.target.result;
+                if (!db.objectStoreNames.contains('materials')) {
+                    db.createObjectStore('materials', { keyPath: 'id', autoIncrement: true });
+                }
+            };
+            request.onsuccess = (event) => {
+                db = event.target.result;
+                renderMaterialList();
+            };
+            request.onerror = (event) => {
+                console.error('IndexedDB error:', event.target.error);
+            };
+        }
+
+        // Add Study Material Modal
+        function showAddMaterialModal() {
+            document.getElementById('add-material-modal').classList.remove('hidden');
+        }
+        function closeAddMaterialModal() {
+            document.getElementById('add-material-modal').classList.add('hidden');
+        }
+        document.getElementById('add-material-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const title = this.title.value;
+            const description = this.description.value;
+            const file = this.file.files[0];
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const fileData = event.target.result;
+                const material = { title, description, fileName: file.name, fileData, timestamp: Date.now() };
+                const transaction = db.transaction(['materials'], 'readwrite');
+                transaction.objectStore('materials').add(material);
+                transaction.oncomplete = function() {
+                    renderMaterialList();
+                    closeAddMaterialModal();
+                    document.getElementById('add-material-form').reset();
+                };
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Render Materials
+        function renderMaterialList() {
+            const transaction = db.transaction(['materials'], 'readonly');
+            const store = transaction.objectStore('materials');
+            const request = store.getAll();
+            request.onsuccess = function() {
+                const materials = request.result;
+                const container = document.getElementById('material-list');
+                container.innerHTML = materials.map(mat => `
+                    <div class="material-card bg-white rounded-lg shadow-md px-6 py-5 overflow-hidden transition duration-300 ease-in-out relative" data-aos="fade-up">
+                        <div class="flex items-center">
+                            <i data-feather="file-text" class="h-10 w-10 text-indigo-600 mr-3"></i>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900">${mat.title}</h3>
+                                <p class="text-gray-500 text-sm">${mat.description}</p>
+                                <span class="text-xs text-gray-400">Uploaded: ${new Date(mat.timestamp).toLocaleString()}</span>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex space-x-3 justify-end">
+                            <button onclick="downloadMaterial(${mat.id})" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 flex items-center">
+                                <i data-feather="download" class="mr-2 h-4 w-4"></i> Download
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+                feather.replace();
+            };
+        }
+
+        // Download File from IndexedDB
+        function downloadMaterial(id) {
+            const transaction = db.transaction(['materials'], 'readonly');
+            const store = transaction.objectStore('materials');
+            const request = store.get(id);
+            request.onsuccess = function() {
+                const material = request.result;
+                if (material) {
+                    const a = document.createElement('a');
+                    a.href = material.fileData;
+                    a.download = material.fileName;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                } else {
+                    alert('Material not found!');
+                }
+            };
+        }
+
+        // Initialize DB and icons after DOM loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            initIndexedDB();
+            feather.replace();
+        });
+
+    </script>
+</body>
+</html>
